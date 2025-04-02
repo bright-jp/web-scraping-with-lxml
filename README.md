@@ -230,7 +230,7 @@ To start, obtain proxies from Bright Data by signing up for a free trial. After 
 
 ![Bright Data Dashboard](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/Bright-Data-Dashboard-1024x461.png)
 
-Navigate to the **My Zones** option and create a new residential proxy. This will reveal your proxy username, password, and host, which you need in the next step.
+Navigate to the **My Zones** option and create a new [residential proxy](https://brightdata.com/proxy-types/residential-proxies). This will reveal your proxy username, password, and host, which you need in the next step.
 
 Next, modify `static_scrape.py` by adding the following code below the URL variable:
 
