@@ -1,6 +1,6 @@
 # lxml によるWebスクレイピング
 
-[![Bright Data Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
+[![Bright Data Promo](https://github.com/bright-jp/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
 
 このガイドでは、Python の `lxml` パッケージを使用して静的および動的コンテンツを解析し、一般的な課題を克服し、データ抽出プロセスを効率化する方法を説明します。
 
@@ -39,11 +39,11 @@ pip install lxml requests cssselect
 
 まず、ブラウザの **Dev Tools** を使って対象となる HTML 要素を特定します。Webページを右クリックして **Inspect** を選択するか、Chrome で **F12** を押すと **Dev Tools** を開けます。
 
-![DevTools in Chrome](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/DevTools-in-Chrome-1024x576.png)
+![DevTools in Chrome](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/DevTools-in-Chrome-1024x576.png)
 
 画面右側に、ページのレンダリングを担当するコードが表示されます。各書籍データを扱う特定の HTML 要素を見つけるには、ホバーして選択するオプション（画面左上の矢印）を使ってコードを辿ります。
 
-![Hover-to-select option in Dev Tools](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/Hover-to-select-option-in-Dev-Tools-1024x587.png)
+![Hover-to-select option in Dev Tools](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/Hover-to-select-option-in-Dev-Tools-1024x587.png)
 
 **Dev Tools** では、次のコードスニペットが表示されるはずです。
 
@@ -111,7 +111,7 @@ python static_scrape.py
 
 このコマンドにより、ディレクトリ内に次の出力を持つ新しいファイルが生成されます。
 
-![static_scrape.py JSON output](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/static_scrape.py-JSON-output-1024x695.png)
+![static_scrape.py JSON output](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/static_scrape.py-JSON-output-1024x695.png)
 
 このスクリプトの全コードは [GitHub](https://gist.github.com/vivekthedev/c1c5f0fb0e23cabfa3fa5c364b939f7c) で参照できます。
 
@@ -127,7 +127,7 @@ YouTube は JavaScript によってレンダリングされるコンテンツの
 
 まず、**Dev Tools** でWebページの HTML コードを確認します。
 
-![FreeCodeCamp page on YouTube](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/FreeCodeCamp-page-on-YouTube-1024x576.png)
+![FreeCodeCamp page on YouTube](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/FreeCodeCamp-page-on-YouTube-1024x576.png)
 
 次のコードは、動画タイトルとリンクを表示する要素を特定します。
 
@@ -218,7 +218,7 @@ python dynamic_scrape.py
 
 スクリプト実行後、`videos.json` という新しいファイルがディレクトリに作成されます。
 
-![dynamic_scrape.py JSON output](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/dynamic_scrape.py-JSON-output-1024x495.png)
+![dynamic_scrape.py JSON output](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/dynamic_scrape.py-JSON-output-1024x495.png)
 
 このスクリプトの全コードも [GitHub](https://gist.github.com/vivekthedev/36489fbaf896eb7c06ebb9350dec298a) で参照できます。
 
@@ -228,7 +228,7 @@ Webスクレイピングでは、アンチスクレイピングツールやレ�
 
 まず、無料トライアルに登録して Bright Data からプロキシを取得します。Bright Data アカウントを作成すると、次のダッシュボードが表示されます。
 
-![Bright Data Dashboard](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/Bright-Data-Dashboard-1024x461.png)
+![Bright Data Dashboard](https://github.com/bright-jp/web-scraping-with-lxml/blob/main/images/Bright-Data-Dashboard-1024x461.png)
 
 **My Zones** オプションに移動し、新しい [residential proxy](https://brightdata.jp/proxy-types/residential-proxies) を作成します。これにより、次のステップで必要となるプロキシの username、password、host が表示されます。
 
