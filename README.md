@@ -1,51 +1,51 @@
-# Web Scraping with lxml
+# lxml によるWebスクレイピング
 
-[![Bright Data Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.com/)
+[![Bright Data Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
 
-This guide explains how to use the `lxml` package in Python to parse static and dynamic content, overcome common challenges, and streamline your data extraction process.
+このガイドでは、Python の `lxml` パッケージを使用して静的および動的コンテンツを解析し、一般的な課題を克服し、データ抽出プロセスを効率化する方法を説明します。
 
-- [Using lxml for Web Scraping in Python](#using-lxml-for-web-scraping-in-python)
-- [Prerequisites](#prerequisites)
-- [Parsing Static HTML Content](#parsing-static-html-content)
-- [Parsing Dynamic HTML Content](#parsing-dynamic-html-content)
-- [Using lxml with Bright Data Proxy](#using-lxml-with-bright-data-proxy)
+- [Pythonでlxmlを使ったWebスクレイピング](#using-lxml-for-web-scraping-in-python)
+- [前提条件](#prerequisites)
+- [静的HTMLコンテンツの解析](#parsing-static-html-content)
+- [動的HTMLコンテンツの解析](#parsing-dynamic-html-content)
+- [Bright Data Proxyとlxmlの併用](#using-lxml-with-bright-data-proxy)
 
-## Using lxml for Web Scraping in Python
+## Pythonでlxmlを使ったWebスクレイピング
 
-On the web, structured and hierarchical data can be represented in two formats—HTML and XML:
+Web上では、構造化された階層データは HTML と XML の2つの形式で表現できます。
 
-- **XML** is a basic structure that does not come with prebuilt tags and styles. The coder creates the structure by defining its own tags. The tag’s main purpose is to create a standard data structure that can be understood between different systems.
-- **HTML** is a web markup language with predefined tags. These tags come with some styling properties, such as `font-size` in `<h1>` tags or `display` for `<img />` tags. HTML’s primary function is to structure web pages effectively.
+- **XML** は、あらかじめ用意されたタグやスタイルを持たない基本的な構造です。コーダーが独自のタグを定義して構造を作成します。タグの主な目的は、異なるシステム間で理解可能な標準データ構造を作ることです。
+- **HTML** は、事前定義されたタグを持つWebマークアップ言語です。これらのタグには、`<h1>` タグの `font-size` や `<img />` タグの `display` のようなスタイルプロパティが含まれます。HTML の主な機能は、Webページを効果的に構造化することです。
 
-lxml works with both HTML and XML documents.
+lxml は HTML と XML の両方のドキュメントで動作します。
 
 ### Prerequisites
 
-Before you can start web scraping with lxml, you need to install a few libraries on your machine:
+lxml でWebスクレイピングを開始する前に、マシンにいくつかのライブラリをインストールする必要があります。
 
 ```sh
 pip install lxml requests cssselect
 ```
 
-This command installs the following:
+このコマンドで以下がインストールされます。
 
-- `lxml` to parse XML and HTML
-- `requests` for fetching web pages
-- `cssselect`, which uses CSS selectors to extract HTML elements
+- XML と HTML を解析するための `lxml`
+- Webページを取得するための `requests`
+- CSS セレクタを使用して HTML 要素を抽出する `cssselect`
 
 ### Parsing Static HTML Content
 
-Two main types of web content can be scraped: static and dynamic. Static content is embedded in the HTML document when the web page initially loads, making it easy to scrape. In contrast, dynamic content is loaded continuously or triggered by JavaScript after the initial page load.
+スクレイピングできるWebコンテンツには、主に静的と動的の2種類があります。静的コンテンツはWebページの初回読み込み時にHTMLドキュメントへ埋め込まれているため、スクレイピングが容易です。一方、動的コンテンツは初回読み込み後に継続的に読み込まれたり、JavaScript によってトリガーされたりします。
 
-To start, use your browser’s **Dev Tools** to identify the relevant HTML elements. Open **Dev Tools** by right-clicking the web page and selecting the **Inspect** option or pressing **F12** in Chrome.
+まず、ブラウザの **Dev Tools** を使って対象となる HTML 要素を特定します。Webページを右クリックして **Inspect** を選択するか、Chrome で **F12** を押すと **Dev Tools** を開けます。
 
 ![DevTools in Chrome](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/DevTools-in-Chrome-1024x576.png)
 
-The right side of the screen displays the code responsible for rendering the page. To locate the specific HTML element that handles each book’s data, search through the code using the hover-to-select option (the arrow in the top-left corner of the screen):
+画面右側に、ページのレンダリングを担当するコードが表示されます。各書籍データを扱う特定の HTML 要素を見つけるには、ホバーして選択するオプション（画面左上の矢印）を使ってコードを辿ります。
 
 ![Hover-to-select option in Dev Tools](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/Hover-to-select-option-in-Dev-Tools-1024x587.png)
 
-In **Dev Tools**, you should see the following code snippet:
+**Dev Tools** では、次のコードスニペットが表示されるはずです。
 
 ```html
 <article class="product_pod">
@@ -58,7 +58,7 @@ In **Dev Tools**, you should see the following code snippet:
     </article>
 ```
 
-Create a new file named `static_scrape.py` and input the following code:
+`static_scrape.py` という新しいファイルを作成し、次のコードを入力します。
 
 ```python
 import requests
@@ -70,7 +70,7 @@ URL = "https://books.toscrape.com/"
 content = requests.get(URL).text
 ```
 
-Next, parse the HTML and extract data:
+次に、HTML を解析してデータを抽出します。
 
 ```python
 parsed = html.fromstring(content)
@@ -78,9 +78,9 @@ all_books = parsed.xpath('//article[@class="product_pod"]')
 books = []
 ```
 
-This code initializes the `parsed` variable using `html.fromstring(content)`, which parses the HTML content into a hierarchical tree structure. The `all_books` variable uses an XPath selector to retrieve all `<article>` tags with the class `product_pod` from the web page. This syntax is specifically valid for XPath expressions.
+このコードは、`html.fromstring(content)` を使って `parsed` 変数を初期化し、HTML コンテンツを階層的なツリー構造へ解析します。`all_books` 変数では XPath セレクタを使用し、Webページから class が `product_pod` のすべての `<article>` タグを取得します。この構文は XPath 式として有効です。
 
-Next, iterate through the books and extract titles and prices:
+次に、書籍を反復処理してタイトルと価格を抽出します。
 
 ```python
 for book in all_books:
@@ -90,46 +90,46 @@ for book in all_books:
 
 ```
 
-The `book_title` variable is defined using an XPath selector that retrieves the `title` attribute from an `<a>` tag within an `<h3>` tag. The dot (`.`) at the beginning of the XPath expression specifies that the search should start from the `<article>` tag rather than the default starting point. 
+`book_title` 変数は、`<h3>` タグ内の `<a>` タグから `title` 属性を取得する XPath セレクタで定義されています。XPath 式の先頭にあるドット（`.`）は、デフォルトの開始点ではなく `<article>` タグから検索を開始することを指定します。
 
-The next line uses the `cssselect` method to extract the price from a `<p>` tag with the class `price_color`. Since `cssselect` returns a list, indexing (`[0]`) accesses the first element, and `text_content()` retrieves the text inside the element. 
+次の行では、`cssselect` メソッドを使って class が `price_color` の `<p>` タグから価格を抽出します。`cssselect` はリストを返すため、インデックス（`[0]`）で先頭要素にアクセスし、`text_content()` で要素内のテキストを取得します。
 
-Each extracted title and price pair is then appended to the `books` list as a dictionary, which can be easily stored in a JSON file.
+抽出されたタイトルと価格のペアは辞書として `books` リストに追加され、JSON ファイルに容易に保存できます。
 
-Now, save the extracted data as a JSON file:
+次に、抽出データを JSON ファイルとして保存します。
 
 ```python
 with open("books.json", "w", encoding="utf-8") as file:
     json.dump(books, file)
 ```
 
-Run the script:
+スクリプトを実行します。
 
 ```sh
 python static_scrape.py
 ```
 
-This command generates a new file in your directory with the following output:
+このコマンドにより、ディレクトリ内に次の出力を持つ新しいファイルが生成されます。
 
 ![static_scrape.py JSON output](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/static_scrape.py-JSON-output-1024x695.png)
 
-All the code for this script is available on [GitHub](https://gist.github.com/vivekthedev/c1c5f0fb0e23cabfa3fa5c364b939f7c).
+このスクリプトの全コードは [GitHub](https://gist.github.com/vivekthedev/c1c5f0fb0e23cabfa3fa5c364b939f7c) で参照できます。
 
 ### Parsing Dynamic HTML Content
 
-To scrape dynamic content, install [Selenium](https://www.selenium.dev/):
+動的コンテンツをスクレイピングするには、[Selenium](https://www.selenium.dev/) をインストールします。
 
 ```sh
 pip install selenium
 ```
 
-YouTube is a great example of content rendered using JavaScript. Let's scrape data for the top hundred videos from the [freeCodeCamp.org YouTube channel](https://www.youtube.com/c/Freecodecamp) by emulating keyboard presses to scroll the page.
+YouTube は JavaScript によってレンダリングされるコンテンツの代表例です。キーボード操作をエミュレートしてページをスクロールし、[freeCodeCamp.org YouTube channel](https://www.youtube.com/c/Freecodecamp) の上位100本の動画データをスクレイピングしてみましょう。
 
-To begin, inspect the HTML code of the web page with **Dev Tools**:
+まず、**Dev Tools** でWebページの HTML コードを確認します。
 
 ![FreeCodeCamp page on YouTube](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/FreeCodeCamp-page-on-YouTube-1024x576.png)
 
-The following code identifies the elements responsible for displaying the video title and link:
+次のコードは、動画タイトルとリンクを表示する要素を特定します。
 
 ```html
 <a id="video-title-link" class="yt-simple-endpoint focus-on-expand style-scope ytd-rich-grid-media" href="/watch?v=i740xlsqxEM">
@@ -137,9 +137,9 @@ The following code identifies the elements responsible for displaying the video 
 </yt-formatted-string></a>
 ```
 
-The video title is within the `yt-formatted-string` tag with the ID `video-title`, and the video link is located in the `href` attribute of the `a` tag with the ID `video-title-link`.
+動画タイトルは ID が `video-title` の `yt-formatted-string` タグ内にあり、動画リンクは ID が `video-title-link` の `a` タグの `href` 属性にあります。
 
-Create `dynamic_scrape.py` and import required modules:
+`dynamic_scrape.py` を作成し、必要なモジュールをインポートします。
 
 ```python
 from selenium import webdriver
@@ -153,7 +153,7 @@ import json
 
 ```
 
-Define the browser driver:
+ブラウザドライバを定義します。
 
 ```python
 URL = "https://www.youtube.com/@freecodecamp/videos"
@@ -164,13 +164,13 @@ driver.get(URL)
 sleep(3)
 ```
 
-Similar to the previous script, you declare a `URL` variable containing the web URL that you want to scrape and a `videos` variable that stores all the data as a list. 
+前のスクリプトと同様に、スクレイピングしたいWeb URL を含む `URL` 変数と、すべてのデータをリストとして格納する `videos` 変数を宣言します。
 
-Next, a `driver` variable is declared (_i.e._, a `Chrome` instance) that you use to interact with the browser. The `get()` function opens the browser instance and sends a request to the specified `URL`. 
+次に、ブラウザと対話するために `driver` 変数（つまり `Chrome` インスタンス）を宣言します。`get()` 関数はブラウザインスタンスを開き、指定した `URL` へリクエストを送信します。
 
-After that, you call the `sleep` function to wait for three seconds before accessing any element on the web page to ensure all the HTML code is loaded in the browser.
+その後、Webページ上の要素にアクセスする前に `sleep` 関数を呼び出して3秒待機し、ブラウザ内にすべての HTML コードが読み込まれるようにします。
 
-Now, emulate scrolling down to load more videos:
+次に、下方向へのスクロールをエミュレートして追加の動画を読み込みます。
 
 ```python
 parent = driver.find_element(By.TAG_NAME, 'html')
@@ -179,9 +179,9 @@ for i in range(4):
     sleep(3)
 ```
 
-The `send_keys` method simulates pressing the `END` key to scroll to the bottom of the page, triggering more videos to load. This action is repeated four times within a `for` loop to ensure enough videos are loaded. The `sleep` function pauses for three seconds after each scroll to allow the videos to load before scrolling again.
+`send_keys` メソッドは `END` キーの押下をシミュレートしてページ最下部へスクロールし、さらに動画が読み込まれるようにトリガーします。この操作は `for` ループ内で4回繰り返され、十分な数の動画が読み込まれるようにします。各スクロール後に `sleep` 関数が3秒停止し、次のスクロール前に動画が読み込まれる時間を確保します。
 
-Next, extract video titles and links:
+次に、動画タイトルとリンクを抽出します。
 
 ```python
 html_data = html.fromstring(driver.page_source)
@@ -194,15 +194,15 @@ for video in videos_html:
     videos.append( {"title": title, "link": link} )
 ```
 
-In this code, you pass the HTML content from the driver’s `page_source` attribute to the `fromstring` method, which builds a hierarchical tree of the HTML. 
+このコードでは、driver の `page_source` 属性から取得した HTML コンテンツを `fromstring` メソッドへ渡し、HTML の階層ツリーを構築します。
 
-Then, you select all `<a>` tags with the ID `video-title-link` using CSS selectors, where the `#` sign indicates selection using the tag’s ID. This selection returns a list of elements that satisfy the given criteria. 
+その後、CSS セレクタを使って ID が `video-title-link` のすべての `<a>` タグを選択します。ここで `#` 記号は、タグの ID を使って選択することを示します。この選択は、指定条件を満たす要素のリストを返します。
 
-The code then iterates over each element to extract the title and link. The `text_content` method retrieves the inner text (the video title), while the `get` method fetches the `href` attribute value (the video link). 
+続いて、各要素を反復処理してタイトルとリンクを抽出します。`text_content` メソッドは内部テキスト（動画タイトル）を取得し、`get` メソッドは `href` 属性値（動画リンク）を取得します。
 
-Finally, the data is stored in a list called `videos`.
+最後に、データは `videos` というリストに保存されます。
 
-Now, save the data as a JSON file and close the driver:
+次に、データを JSON ファイルとして保存し、driver を閉じます。
 
 ```python
 with open('videos.json', 'w') as file:
@@ -210,29 +210,29 @@ with open('videos.json', 'w') as file:
 driver.close()
 ```
 
-Run the script:
+スクリプトを実行します。
 
 ```sh
 python dynamic_scrape.py
 ```
 
-After running the script, a new file named `videos.json` is created in your directory:
+スクリプト実行後、`videos.json` という新しいファイルがディレクトリに作成されます。
 
 ![dynamic_scrape.py JSON output](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/dynamic_scrape.py-JSON-output-1024x495.png)
 
-All the code for this script is also available on [GitHub](https://gist.github.com/vivekthedev/36489fbaf896eb7c06ebb9350dec298a).
+このスクリプトの全コードも [GitHub](https://gist.github.com/vivekthedev/36489fbaf896eb7c06ebb9350dec298a) で参照できます。
 
 ### Using lxml with Bright Data Proxy
 
-Web scraping can face challenges like anti-scraping tools and rate limits. Proxy servers help by masking the user’s IP address. Bright Data provides reliable proxy services.
+Webスクレイピングでは、アンチスクレイピングツールやレート制限といった課題に直面することがあります。プロキシサーバーはユーザーの IPアドレス をマスキングすることで役立ちます。Bright Data は信頼性の高いプロキシサービスを提供しています。
 
-To start, obtain proxies from Bright Data by signing up for a free trial. After creating a Bright Data account, you’ll see the following dashboard:
+まず、無料トライアルに登録して Bright Data からプロキシを取得します。Bright Data アカウントを作成すると、次のダッシュボードが表示されます。
 
 ![Bright Data Dashboard](https://github.com/luminati-io/web-scraping-with-lxml/blob/main/images/Bright-Data-Dashboard-1024x461.png)
 
-Navigate to the **My Zones** option and create a new [residential proxy](https://brightdata.com/proxy-types/residential-proxies). This will reveal your proxy username, password, and host, which you need in the next step.
+**My Zones** オプションに移動し、新しい [residential proxy](https://brightdata.jp/proxy-types/residential-proxies) を作成します。これにより、次のステップで必要となるプロキシの username、password、host が表示されます。
 
-Next, modify `static_scrape.py` by adding the following code below the URL variable:
+次に、`static_scrape.py` を修正し、URL 変数の下に次のコードを追加します。
 
 ```python
 URL = "https://books.toscrape.com/"
@@ -250,18 +250,18 @@ proxies = {
 content = requests.get(URL, proxies=proxies).text
 ```
 
-Replace placeholders with your Bright Data credentials and run the script:
+プレースホルダーを Bright Data の認証情報に置き換え、スクリプトを実行します。
 
 ```sh
 python static_scrape.py
 ```
 
-After running this script, you’ll see a similar output to what you received in the previous example.
+このスクリプトを実行すると、前の例で得られたものと同様の出力が表示されます。
 
-You can view this entire script on [GitHub](https://gist.github.com/vivekthedev/201f994bc14e4dbc7263b03983f917b3).
+このスクリプト全体は [GitHub](https://gist.github.com/vivekthedev/201f994bc14e4dbc7263b03983f917b3) で参照できます。
 
 ## Conclusion
 
-Using lxml with Python enables efficient web scraping, but it can be time-consuming. Bright Data offers an efficient alternative with its ready-to-use [datasets](https://brightdata.com/products/datasets) and [Web Scraper API](https://brightdata.com/products/web-scraper).
+Python で lxml を使用すると効率的なWebスクレイピングが可能になりますが、時間がかかる場合があります。Bright Data は、すぐに使える [datasets](https://brightdata.jp/products/datasets) と [Web Scraper API](https://brightdata.jp/products/web-scraper) により、効率的な代替手段を提供しています。
 
-Try Bright Data for free!
+Bright Data を無料でお試しください！
